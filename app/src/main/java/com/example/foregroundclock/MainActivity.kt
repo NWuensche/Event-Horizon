@@ -154,7 +154,7 @@ class MainActivity : ComponentActivity() {
                                         )
                                     }
                                     Text(
-                                        text = "Reminders",
+                                        text = stringResource(R.string.channel_alarm_name),
                                         style = MaterialTheme.typography.headlineLarge
                                     )
                                 }
