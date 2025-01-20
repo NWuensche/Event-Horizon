@@ -18,7 +18,7 @@ class MyForegroundService : Service() {
         const val CHANNEL_NAME = "Timer Service"
         const val CHANNEL_DESCRIPTION = "Keeps the reminder service running"
         const val NOTIFICATION_ID = 1
-        const val ONE_DAY_IN_MILLIS =  60 * 1000L  // 1 day in milliseconds
+        const val ONE_DAY_IN_MILLIS =  60 * 1000L  // 1 day in milliseconds TODO Update
     }
 
     private lateinit var alarmManager: AlarmManager
@@ -87,7 +87,7 @@ class MyForegroundService : Service() {
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("⏰ Reminder Service")
             .setContentText("Running in background")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_notification)
             .setOngoing(true)
             .setContentIntent(pendingIntent)
             .setSilent(true)

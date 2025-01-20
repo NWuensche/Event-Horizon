@@ -44,7 +44,7 @@ class AlarmReceiver : BroadcastReceiver() {
             .setContentTitle("⏰ Reminder")
             .setContentText(name)
             .setSubText("Tap to view details")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_notification)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
