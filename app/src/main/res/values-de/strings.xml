@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Future Clock</string>
+    <string name="next_alarm_format">%1$s</string>
+    
+    <!-- Service Strings -->
+    <string name="channel_service_name">Timer Service</string>
+    <string name="channel_service_description">Hält den Erinnerungsdienst am Laufen</string>
+    <string name="notification_service_title">⏰ Erinnerungsdienst</string>
+    <string name="notification_service_text">Läuft im Hintergrund</string>
+    
+    <!-- Alarm Strings -->
+    <string name="channel_alarm_name">Erinnerungen</string>
+    <string name="channel_alarm_description">Benachrichtigungskanal für Erinnerungen</string>
+    <string name="notification_alarm_title">⏰ Erinnerung</string>
+    <string name="notification_alarm_subtext">Tippen für Details</string>
+    
+    <!-- Dialog Strings -->
+    <string name="dialog_title">Details eingeben</string>
+    <string name="dialog_event_name">Ereignisname</string>
+    <string name="dialog_days_until">Tage bis zur Erinnerung</string>
+    <string name="dialog_confirm">Bestätigen</string>
+    <string name="dialog_cancel">Abbrechen</string>
+    
+    <!-- Content Descriptions -->
+    <string name="cd_repeat_event">Ereignis wiederholen</string>
+    <string name="cd_delete_event">Ereignis löschen</string>
+</resources>

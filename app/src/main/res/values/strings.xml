@@ -1,4 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Future Clock</string>
-    <string name="next_alarm_format"> %1$s</string>
+    <string name="next_alarm_format">%1$s</string>
+    
+    <!-- Service Strings -->
+    <string name="channel_service_name">Timer Service</string>
+    <string name="channel_service_description">Keeps the reminder service running</string>
+    <string name="notification_service_title">⏰ Reminder Service</string>
+    <string name="notification_service_text">Running in background</string>
+    
+    <!-- Alarm Strings -->
+    <string name="channel_alarm_name">Reminders</string>
+    <string name="channel_alarm_description">Notification channel for reminders</string>
+    <string name="notification_alarm_title">⏰ Reminder</string>
+    <string name="notification_alarm_subtext">Tap to view details</string>
+    
+    <!-- Dialog Strings -->
+    <string name="dialog_title">Enter Details</string>
+    <string name="dialog_event_name">Event Name</string>
+    <string name="dialog_days_until">Days until reminder</string>
+    <string name="dialog_confirm">Confirm</string>
+    <string name="dialog_cancel">Cancel</string>
+    
+    <!-- Content Descriptions -->
+    <string name="cd_repeat_event">Repeat event</string>
+    <string name="cd_delete_event">Delete event</string>
 </resources>

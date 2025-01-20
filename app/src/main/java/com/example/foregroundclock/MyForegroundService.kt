@@ -15,8 +15,6 @@ import androidx.core.content.ContextCompat
 class MyForegroundService : Service() {
     companion object {
         const val CHANNEL_ID = "TimerServiceChannel"
-        const val CHANNEL_NAME = "Timer Service"
-        const val CHANNEL_DESCRIPTION = "Keeps the reminder service running"
         const val NOTIFICATION_ID = 1
         const val ONE_DAY_IN_MILLIS =  60 * 1000L  // 1 day in milliseconds TODO Update
     }
@@ -45,10 +43,10 @@ class MyForegroundService : Service() {
     private fun createNotificationChannel() {
         val serviceChannel = NotificationChannel(
             CHANNEL_ID,
-            CHANNEL_NAME,
+            getString(R.string.channel_service_name),
             NotificationManager.IMPORTANCE_LOW
         ).apply {
-            description = CHANNEL_DESCRIPTION
+            description = getString(R.string.channel_service_description)
             enableLights(false)
             setShowBadge(false)
             lockscreenVisibility = Notification.VISIBILITY_SECRET
@@ -56,10 +54,10 @@ class MyForegroundService : Service() {
         
         val alarmChannel = NotificationChannel(
             AlarmReceiver.channelAlarm,
-            AlarmReceiver.channelName,
+            getString(R.string.channel_alarm_name),
             NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
-            description = AlarmReceiver.channelDescription
+            description = getString(R.string.channel_alarm_description)
             enableLights(true)
             lightColor = Color.BLUE
             enableVibration(true)
@@ -85,8 +83,8 @@ class MyForegroundService : Service() {
         )
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("⏰ Reminder Service")
-            .setContentText("Running in background")
+            .setContentTitle(getString(R.string.notification_service_title))
+            .setContentText(getString(R.string.notification_service_text))
             .setSmallIcon(R.drawable.ic_notification)
             .setOngoing(true)
             .setContentIntent(pendingIntent)

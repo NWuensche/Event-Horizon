@@ -68,6 +68,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.foregroundclock.MyForegroundService.Companion.ONE_DAY_IN_MILLIS
 import com.example.foregroundclock.ui.theme.ForegroundClockTheme
 import kotlinx.coroutines.flow.collectLatest
+import androidx.compose.ui.res.stringResource
 
 lateinit var context: Context
 class MainActivity : ComponentActivity() {
@@ -337,7 +338,7 @@ fun EventView(event: EventView, onRepeat: (Int) -> Unit, onDelete: (Int) -> Unit
                 ) {
                     Icon(
                         imageVector = Icons.Default.Refresh,
-                        contentDescription = "Repeat event",
+                        contentDescription = stringResource(R.string.cd_repeat_event),
                         tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
@@ -350,7 +351,7 @@ fun EventView(event: EventView, onRepeat: (Int) -> Unit, onDelete: (Int) -> Unit
                 ) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Delete event",
+                        contentDescription = stringResource(R.string.cd_delete_event),
                         tint = MaterialTheme.colorScheme.onErrorContainer
                     )
                 }
@@ -371,7 +372,7 @@ fun MyDialog(
         onDismissRequest = { onClick(null) },
         title = { 
             Text(
-                "Enter Details",
+                stringResource(R.string.dialog_title),
                 style = MaterialTheme.typography.headlineSmall
             )
         },
@@ -383,7 +384,7 @@ fun MyDialog(
                 OutlinedTextField(
                     value = text1.value,
                     onValueChange = { text1.value = it },
-                    label = { Text("Event Name") },
+                    label = { Text(stringResource(R.string.dialog_event_name)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -399,7 +400,7 @@ fun MyDialog(
                             text2.value = it
                         }
                     },
-                    label = { Text("Days until reminder") },
+                    label = { Text(stringResource(R.string.dialog_days_until)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number
@@ -421,12 +422,12 @@ fun MyDialog(
                 },
                 enabled = text1.value.isNotEmpty() && text2.value.isNotEmpty()
             ) {
-                Text("Confirm")
+                Text(stringResource(R.string.dialog_confirm))
             }
         },
         dismissButton = {
             OutlinedButton(onClick = { onClick(null) }) {
-                Text("Cancel")
+                Text(stringResource(R.string.dialog_cancel))
             }
         }
     )

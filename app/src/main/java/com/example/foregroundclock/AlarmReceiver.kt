@@ -13,8 +13,6 @@ import androidx.core.content.ContextCompat
 class AlarmReceiver : BroadcastReceiver() {
     companion object {
         const val channelAlarm = "TimerServiceChannel2"
-        const val channelName = "Reminders"
-        const val channelDescription = "Notification channel for reminders"
     }
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -41,9 +39,9 @@ class AlarmReceiver : BroadcastReceiver() {
 
         // Create the notification with Material 3 styling
         val notification = NotificationCompat.Builder(context, channelAlarm)
-            .setContentTitle("⏰ Reminder")
+            .setContentTitle(context.getString(R.string.notification_alarm_title))
             .setContentText(name)
-            .setSubText("Tap to view details")
+            .setSubText(context.getString(R.string.notification_alarm_subtext))
             .setSmallIcon(R.drawable.ic_notification)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
@@ -54,9 +52,9 @@ class AlarmReceiver : BroadcastReceiver() {
             .setColorized(true)
             // Modern notification style
             .setStyle(NotificationCompat.BigTextStyle()
-                .setBigContentTitle("⏰ Reminder")
+                .setBigContentTitle(context.getString(R.string.notification_alarm_title))
                 .bigText(name)
-                .setSummaryText("Tap to view details"))
+                .setSummaryText(context.getString(R.string.notification_alarm_subtext)))
             .build()
 
         notificationManager.notify(eventId, notification)
@@ -65,10 +63,10 @@ class AlarmReceiver : BroadcastReceiver() {
     private fun createNotificationChannel(notificationManager: NotificationManager, context: Context) {
         val channel = NotificationChannel(
             channelAlarm,
-            channelName,
+            context.getString(R.string.channel_alarm_name),
             NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
-            description = channelDescription
+            description = context.getString(R.string.channel_alarm_description)
             enableLights(true)
             lightColor = Color.BLUE
             enableVibration(true)
