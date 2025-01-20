@@ -8,10 +8,11 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.util.UUID
 import kotlin.random.Random
 
-class MainVM: ViewModel() {
+class MainVM(private val context: android.content.Context): ViewModel() {
 
     private val mainModel = MainModel()
 
@@ -111,10 +112,14 @@ fun EventDB.toEventsCreateForAlarm(): EventCreateForAlarm {
 fun LocalDateTime.toIso(): String = this.format(DateTimeFormatter.ISO_DATE_TIME)
 
 fun EventDB.toEventView(): EventView {
+    val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+        .withLocale(context.resources.configuration.locales[0])
+    val dateTime = LocalDateTime.parse(nextRepeatISO, DateTimeFormatter.ISO_DATE_TIME)
+    val formattedDate = dateTime.format(formatter)
+    
     return EventView(
         id = id,
         name = name,
-        nextRepeat = nextRepeatISO
+        nextRepeat = context.getString(R.string.next_alarm_format, formattedDate)
     )
-
 }

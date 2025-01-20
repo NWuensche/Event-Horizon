@@ -54,23 +54,25 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.foregroundclock.MyForegroundService.Companion.ONE_DAY_IN_MILLIS
 import com.example.foregroundclock.ui.theme.ForegroundClockTheme
 import kotlinx.coroutines.flow.collectLatest
 
 lateinit var context: Context
 class MainActivity : ComponentActivity() {
-    val vm: MainVM by viewModels()
-
-
-
+    val vm: MainVM by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return MainVM(application) as T
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         context = this.application
-
-
-
 
         enableEdgeToEdge()
         setContent {
@@ -108,10 +110,8 @@ class MainActivity : ComponentActivity() {
 
             }
 
-
             val events = vm.events.collectAsState()
             val showDialog = vm.showDialog.collectAsState()
-
 
             ForegroundClockTheme {
                 Scaffold(

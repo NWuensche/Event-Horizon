@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ForegroundClock</string>
+    <string name="next_alarm_format">🔔 %1$s</string>
 </resources>
