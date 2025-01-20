@@ -7,16 +7,18 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
+import android.graphics.Color
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 
 class MyForegroundService : Service() {
-    private val CHANNEL_ID = "TimerServiceChannel"
-    private val NOTIFICATION_ID = 1
     companion object {
-        //val ONE_DAY_IN_MILLIS =  60 * 1000L  // 1 day in milliseconds
-        val ONE_DAY_IN_MILLIS = 1 * 24 * 60 * 60 * 1000L  // 1 day in milliseconds
-
+        const val CHANNEL_ID = "TimerServiceChannel"
+        const val CHANNEL_NAME = "Timer Service"
+        const val CHANNEL_DESCRIPTION = "Keeps the reminder service running"
+        const val NOTIFICATION_ID = 1
+        const val ONE_DAY_IN_MILLIS =  60 * 1000L  // 1 day in milliseconds
     }
 
     private lateinit var alarmManager: AlarmManager
@@ -25,7 +27,6 @@ class MyForegroundService : Service() {
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
-        //setupAlarm()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -42,26 +43,57 @@ class MyForegroundService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     private fun createNotificationChannel() {
-        val channel = NotificationChannel(
+        val serviceChannel = NotificationChannel(
             CHANNEL_ID,
-            "Timer Service Channel",
-            NotificationManager.IMPORTANCE_DEFAULT
-        )
-        val notificationManager = getSystemService(NotificationManager::class.java)
-        notificationManager.createNotificationChannel(channel)
-        val channelAlarm = NotificationChannel(
+            CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_LOW
+        ).apply {
+            description = CHANNEL_DESCRIPTION
+            enableLights(false)
+            setShowBadge(false)
+            lockscreenVisibility = Notification.VISIBILITY_SECRET
+        }
+        
+        val alarmChannel = NotificationChannel(
             AlarmReceiver.channelAlarm,
-            "Timer Service Channel",
+            AlarmReceiver.channelName,
             NotificationManager.IMPORTANCE_DEFAULT
-        )
-        notificationManager.createNotificationChannel(channelAlarm)
+        ).apply {
+            description = AlarmReceiver.channelDescription
+            enableLights(true)
+            lightColor = Color.BLUE
+            enableVibration(true)
+            setShowBadge(true)
+        }
+
+        getSystemService(NotificationManager::class.java)?.apply {
+            createNotificationChannel(serviceChannel)
+            createNotificationChannel(alarmChannel)
+        }
     }
 
     private fun createNotification(): Notification {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Timer Service")
-            .setContentText("Timer is running")
+            .setContentTitle("⏰ Reminder Service")
+            .setContentText("Running in background")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setOngoing(true)
+            .setContentIntent(pendingIntent)
+            .setSilent(true)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setCategory(NotificationCompat.CATEGORY_SERVICE)
+            .setColor(ContextCompat.getColor(this, android.R.color.system_accent1_600))
             .build()
     }
 
