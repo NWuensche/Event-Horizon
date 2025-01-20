@@ -12,11 +12,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
@@ -25,18 +28,27 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -209,40 +221,72 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainPage(events: List<EventView>, onEventRepeat: (Int) -> Unit, onEventDelete: (Int) -> Unit, modifier: Modifier = Modifier) {
-
-    LazyColumn(modifier = modifier) {
+    LazyColumn(
+        modifier = modifier.padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         items(events) {
             EventView(it, onEventRepeat, onEventDelete)
         }
     }
-
 }
 
 @Composable
 fun EventView(event: EventView, onRepeat: (Int) -> Unit, onDelete: (Int) -> Unit) {
-        Row {
-            Column {
-                Text(event.name)
-                Row {
-                    Text(event.nextRepeat)
+    ElevatedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        elevation = CardDefaults.elevatedCardElevation()
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = event.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = event.nextRepeat,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            Row {
+                FilledTonalIconButton(
+                    onClick = { onRepeat(event.id) }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Refresh,
+                        contentDescription = "Repeat event",
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                FilledTonalIconButton(
+                    onClick = { onDelete(event.id) }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Delete event",
+                        tint = MaterialTheme.colorScheme.error
+                    )
                 }
             }
-
-            IconButton(
-                onClick = { onRepeat(event.id) }
-            ) {
-                Icon(imageVector = Icons.Default.Refresh, contentDescription = null) //TODO Different Icon
-            }
-
-            IconButton(
-                onClick = { onDelete(event.id) }
-            ) {
-                Icon(imageVector = Icons.Default.Delete, contentDescription = null) //TODO Different Icon
-            }
         }
-
+    }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyDialog(
     onClick: (EventCreate?) -> Unit
@@ -250,62 +294,75 @@ fun MyDialog(
     val text1 = remember { mutableStateOf("") }
     val text2 = remember { mutableStateOf("") }
 
-        AlertDialog(
-            onDismissRequest = { onClick(null) },
-            title = { Text("Enter Details") },
-            text = {
-                Column {
-                    OutlinedTextField(
-                        value = text1.value,
-                        onValueChange = { text1.value= it },
-                        label = { Text("Name des Events") },
-                        singleLine = true,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp)
+    AlertDialog(
+        onDismissRequest = { onClick(null) },
+        title = { 
+            Text(
+                "Enter Details",
+                style = MaterialTheme.typography.headlineSmall
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier.padding(top = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                OutlinedTextField(
+                    value = text1.value,
+                    onValueChange = { text1.value = it },
+                    label = { Text("Event Name") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
                     )
+                )
 
-                    OutlinedTextField(
-                        value = text2.value,
-                        onValueChange = {
-                            if (it.all(Char::isDigit)) {
-                                text2.value = it
-
-                            }
-                            },
-                        label = { Text("Tage bis zur Erinnerung") },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp)
+                OutlinedTextField(
+                    value = text2.value,
+                    onValueChange = {
+                        if (it.all(Char::isDigit)) {
+                            text2.value = it
+                        }
+                    },
+                    label = { Text("Days until reminder") },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
                     )
-                }
-            },
-            confirmButton = {
-                TextButton(onClick = {
-                    onClick(EventCreate(name = text1.value, repeatDays = text2.value.toInt()))
-                }) {
-                    Text("Confirm")
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { onClick(null) }) {
-                    Text("Cancel")
-                }
+                )
             }
-        )
+        },
+        confirmButton = {
+            FilledTonalButton(
+                onClick = {
+                    if (text1.value.isNotEmpty() && text2.value.isNotEmpty()) {
+                        onClick(EventCreate(name = text1.value, repeatDays = text2.value.toInt()))
+                    }
+                },
+                enabled = text1.value.isNotEmpty() && text2.value.isNotEmpty()
+            ) {
+                Text("Confirm")
+            }
+        },
+        dismissButton = {
+            OutlinedButton(onClick = { onClick(null) }) {
+                Text("Cancel")
+            }
+        }
+    )
 }
-
-
 
 @Preview(showBackground = true)
 @Composable
 fun ScreenPreview() {
     ForegroundClockTheme {
-        //TODO Add second push channel for alarms
         MainPage(
             events = listOf(EventView(1, "name", "repeat")),
             onEventRepeat = {},
