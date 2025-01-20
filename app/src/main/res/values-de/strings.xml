@@ -25,4 +25,5 @@
     <!-- Content Descriptions -->
     <string name="cd_repeat_event">Ereignis wiederholen</string>
     <string name="cd_delete_event">Ereignis löschen</string>
+    <string name="event_deleted">%1$s gelöscht</string>
 </resources>

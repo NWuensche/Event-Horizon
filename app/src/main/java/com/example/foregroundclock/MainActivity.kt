@@ -46,6 +46,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -56,6 +59,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -186,7 +190,13 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding),
                         events = events.value,
                         onEventRepeat = vm::onRepeatClicked,
-                        onEventDelete = vm::onDelete
+                        onEventDelete = { eventId ->
+                            val event = events.value.find { it.id == eventId }
+                            event?.let {
+                                vm.onDelete(eventId, it.name)
+                            }
+                        },
+                        viewModel = vm
                     )
                 }
 
@@ -275,14 +285,38 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainPage(events: List<EventView>, onEventRepeat: (Int) -> Unit, onEventDelete: (Int) -> Unit, modifier: Modifier = Modifier) {
-    LazyColumn(
-        modifier = modifier.padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(events) {
-            EventView(it, onEventRepeat, onEventDelete)
+fun MainPage(
+    events: List<EventView>, 
+    onEventRepeat: (Int) -> Unit, 
+    onEventDelete: (Int) -> Unit, 
+    viewModel: MainVM,
+    modifier: Modifier = Modifier
+) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        viewModel.snackbarMessage.collectLatest { message ->
+            snackbarHostState.showSnackbar(message)
         }
+    }
+
+    Box(modifier = modifier) {
+        LazyColumn(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(events) {
+                EventView(it, onEventRepeat, onEventDelete)
+            }
+        }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(16.dp)
+        )
     }
 }
 
@@ -433,14 +467,15 @@ fun MyDialog(
     )
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun ScreenPreview() {
     ForegroundClockTheme {
         MainPage(
             events = listOf(EventView(1, "name", "repeat")),
             onEventRepeat = {},
-            onEventDelete = {}
+            onEventDelete = {},
+            viewModel = MainVM(android.app.Application())
         )
     }
 }

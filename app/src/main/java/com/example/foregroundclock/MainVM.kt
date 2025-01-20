@@ -24,16 +24,17 @@ class MainVM(private val context: android.content.Context): ViewModel() {
             field = value
         }
     val showDialog = MutableStateFlow(false)
+    val snackbarMessage = MutableSharedFlow<String>()
 
     val createEvent = MutableSharedFlow<EventCreateForAlarm>()
     val deleteEvent = MutableSharedFlow<Int>()
     val repeatNowEvent = MutableSharedFlow<EventCreateForAlarm>()
 
-    fun onDelete(eventId: Int) {
-        //todo snackbar mit name gelöscht
+    fun onDelete(eventId: Int, eventName: String) {
         eventsDB = eventsDB.filterNot { it.id == eventId }
         viewModelScope.launch {
             deleteEvent.emit(eventId)
+            snackbarMessage.emit(context.getString(R.string.event_deleted, eventName))
         }
         //TODO Delete alarm
     }
