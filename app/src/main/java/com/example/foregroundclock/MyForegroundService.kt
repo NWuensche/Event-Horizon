@@ -16,7 +16,7 @@ class MyForegroundService : Service() {
     companion object {
         const val CHANNEL_ID = "TimerServiceChannel"
         const val NOTIFICATION_ID = 1
-        const val ONE_DAY_IN_MILLIS =  60 * 1000L  // 1 day in milliseconds TODO Update
+        const val ONE_DAY_IN_MILLIS =   1 * 24 * 60 * 60 * 1000L  // 1 day in milliseconds
     }
 
     private lateinit var alarmManager: AlarmManager
