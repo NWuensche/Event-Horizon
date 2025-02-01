@@ -1,68 +1,30 @@
 # Event Horizon
 
-Event Horizon is an Android app that revolutionizes how you set long-term reminders. Unlike traditional alarm clocks that focus on daily or weekly patterns, Event Horizon lets you schedule notifications for any point in the future - whether it's 20 days from now or even further ahead.
+An Android app for setting long-term reminders beyond the usual daily or weekly patterns.
 
-## 🌟 Features
+## Features
 
-- **Long-term Reminders**: Set reminders for any future date without being constrained to daily/weekly patterns
-- **Persistent Service**: Runs reliably in the background with a foreground service
-- **Boot Persistence**: Your reminders persist even after device restarts
-- **User-Friendly Interface**: Simple and intuitive UI for managing your future events
-- **Multi-language Support**: Available in English and German
+- Set reminders for any future date
+- Background service for reliable notifications
+- Persists through device restarts
+- Available in English and German
 
-## 🚀 Getting Started
+## Technical Stack
 
-### Prerequisites
-- Android device running Android [version]
-- Enable notifications for the app to receive reminders
-- Allow the app to run in the background for reliable notifications
-
-### Installation
-1. Download the app from [location]
-2. Install and open the app
-3. Grant necessary permissions when prompted
-4. You're ready to start setting your future reminders!
-
-## 📱 Usage
-
-1. **Creating a Reminder**
-   - Tap the + button
-   - Enter the event name
-   - Set the number of days until the event
-   - Confirm to create the reminder
-
-2. **Managing Reminders**
-   - View all your upcoming reminders on the main screen
-   - Delete reminders by tapping the delete icon
-   - Repeat reminders instantly with the repeat button
-
-## 🔒 Permissions
-
-The app requires the following permissions:
-- POST_NOTIFICATIONS: To show reminders
-- RECEIVE_BOOT_COMPLETED: To restore your reminders after device restart
-- FOREGROUND_SERVICE: To ensure reliable reminder delivery
-
-## 🛠️ Technical Details
-
-Built with modern Android development practices:
 - Kotlin
-- Jetpack Compose for UI
+- Jetpack Compose
 - Foreground Services
-- AlarmManager for precise timing
+- AlarmManager
 - Material Design 3
 
-## 📝 License
+## Compilation
 
-[License information]
+1. Install Android Studio
+2. Clone this repository
+3. Open project in Android Studio
+4. Install any missing SDK components when prompted
+5. Connect Android device or create an emulator
+6. Click 'Run' (green play button) to build and install
 
-## 🤝 Contributing
+Note: Minimum SDK version required is Android 8.0 (API level 26)
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📧 Contact
-
-[Contact information]
-
----
-Made with ❤️ for those who plan ahead
