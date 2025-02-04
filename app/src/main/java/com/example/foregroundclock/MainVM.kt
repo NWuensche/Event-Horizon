@@ -20,7 +20,7 @@ class MainVM(private val context: android.content.Context): ViewModel() {
     var eventsDB = emptyList<EventDB>()
         set(value) {
             mainModel.saveEvents(value)
-            events.value = value.map { it.toEventView() }
+            events.value = value.map { it.toEventView() }.sortedBy { it.nextRepeat }
             field = value
         }
     val showDialog = MutableStateFlow(false)
