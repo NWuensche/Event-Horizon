@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="108" height="108" viewBox="0 0 108 108">
+  <!-- Background with gradient -->
+  <defs>
+    <linearGradient id="background-gradient" x1="0" y1="0" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF004494"/>
+      <stop offset="1" stop-color="#FF002E69"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background rectangle with gradient -->
+  <rect width="108" height="108" fill="url(#background-gradient)"/>
+  
+  <!-- Foreground clock icon -->
+  <g transform="translate(27, 27) scale(2.25, 2.25)">
+    <!-- Clock circle -->
+    <path 
+      fill="#D8E2FF" 
+      d="M11.99,2C6.47,2 2,6.48 2,12s4.47,10 9.99,10C17.52,22 22,17.52 22,12S17.52,2 11.99,2zM12,20c-4.42,0 -8,-3.58 -8,-8s3.58,-8 8,-8 8,3.58 8,8 -3.58,8 -8,8z"/>
+    
+    <!-- Clock hands -->
+    <path 
+      fill="#D8E2FF" 
+      d="M12.5,7H11v6l5.25,3.15 0.75,-1.23 -4.5,-2.67z"/>
+  </g>
+</svg>
